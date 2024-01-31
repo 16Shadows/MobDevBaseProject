@@ -2,4 +2,15 @@
     <string name="app_name">Timetable for HSE FE</string>
     <string name="students_timetable">Timetable for students</string>
     <string name="teachers_timetable">Timetable for teachers</string>
+    <string name="select_teacher">Select teacher:</string>
+    <string name="time_s">Time: %s</string>
+    <string name="subject_s">Subject: %s</string>
+    <string name="room_s">Room: %s</string>
+    <string name="building_s">Building: %s</string>
+    <string name="teacher_s">Teacher: %s</string>
+    <string name="daily_timetable">Daily timetable</string>
+    <string name="weekly_timetable">Weekly timetable</string>
+    <string name="status_ongoing_lesson">Ongoing lesson</string>
+    <string name="status_no_lesson">No lesson</string>
+    <string name="select_group">Select group:</string>
 </resources>
