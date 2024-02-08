@@ -33,7 +33,6 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
     protected final String SETTINGS_FOLDER = "/settings/";
     protected final String AVATAR_FILE = SETTINGS_FOLDER + "avatar";
     protected final String AVATAR_TEMP_FILE = SETTINGS_FOLDER + "avatar_temporary";
-    protected final String AVATAR_TEMP_STORED_FILE = SETTINGS_FOLDER + "avatar_temporary_stored";
     protected final String PREFS_KEY_USERNAME = "username";
 
     protected ActivityResultLauncher<Uri> takeAvatarPictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), this::avatarPictureTaken);
@@ -114,13 +113,9 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
         super.onDestroy();
 
         File tempAvatar = getTempAvatarFile();
-        File tempAvatarStored = getTempAvatarStoredFile();
 
         if (tempAvatar.exists() && !tempAvatar.delete())
             Log.w(TAG, "Failed to delete tempAvatar in onDestroy");
-
-        if (tempAvatarStored.exists() && !tempAvatarStored.delete())
-            Log.w(TAG, "Failed to delete tempAvatarStored in onDestroy");
     }
 
     protected void setLuxLevel(float level) {
@@ -147,20 +142,9 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
         return new File(getFilesDir() + AVATAR_TEMP_FILE);
     }
 
-    protected File getTempAvatarStoredFile() {
-        if (!createSettingsFolder())
-            return null;
-
-        return new File(getFilesDir() + AVATAR_TEMP_STORED_FILE);
-    }
-
     protected void saveSettings(View v) {
         File avatar = getAvatarFile();
         File tempAvatar = getTempAvatarFile();
-        File tempAvatarStored = getTempAvatarStoredFile();
-
-        if (tempAvatarStored.exists() && !tempAvatarStored.delete())
-            Log.w(TAG, "saveSettings: failed to delete stored temp avatar.");
 
         if (tempAvatar.exists()) {
             if (avatar.exists() && !avatar.delete()) {
@@ -179,17 +163,11 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
     }
 
     protected void avatarPictureTaken(Boolean result) {
-        File tempAvatar = getTempAvatarFile();
-        File tempAvatarStored = getTempAvatarStoredFile();
+        if (!result)
+            return;
 
-        if (result || tempAvatarStored.exists() && tempAvatar.delete() && tempAvatarStored.renameTo(tempAvatar)) {
-            avatarView.setImageURI(Uri.fromFile(tempAvatar));
-        }
-        else  {
-            tempAvatar.delete();
-            Log.e(TAG, "avatarPictureTaken: failed to restore avatar");
-            avatarView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_avatar, getTheme()));
-        }
+        avatarView.setImageDrawable(null);
+        avatarView.setImageURI(Uri.fromFile(getTempAvatarFile()));
     }
 
     protected void dispatchTakePicture(View v)
@@ -203,21 +181,14 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
         }
 
         File tempAvatar = getTempAvatarFile();
-        File tempAvatarStored = getTempAvatarStoredFile();
-
-        boolean tempAvatarExisted = tempAvatar.exists();
-
         try {
-            if (tempAvatarStored.exists() && !tempAvatarStored.delete() || tempAvatar.exists() && !tempAvatar.renameTo(tempAvatarStored) || !tempAvatar.exists() && !tempAvatar.createNewFile()) {
+            if (!tempAvatar.exists() && !tempAvatar.createNewFile()) {
                 InstantToast.show(this, R.string.file_error, Toast.LENGTH_SHORT);
                 return;
             }
         } catch (IOException e) {
             Log.e(TAG, "dispatchTakePicture", e);
         }
-
-        if (tempAvatarExisted)
-            avatarView.setImageURI(Uri.fromFile(tempAvatarStored));
 
         Uri tempAvatarUri = FileProvider.getUriForFile(this, AppFilesProvider.getAuthority(this), tempAvatar);
         takeAvatarPictureLauncher.launch(tempAvatarUri);
