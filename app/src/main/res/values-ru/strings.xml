@@ -14,4 +14,12 @@
     <string name="status_ongoing_lesson">Идёт пара</string>
     <string name="status_no_lesson">Нет пары</string>
     <string name="select_group">Выберите группу:</string>
+    <string name="settings">Настройки</string>
+    <string name="current_avatar">Текущий аватар</string>
+    <string name="take_a_picture">Сделать фото</string>
+    <string name="enter_your_name">Введите имя</string>
+    <string name="current_light_level_d">Текущий уровень освещённости: %f люкс</string>
+    <string name="save">Сохранить</string>
+    <string name="missing_intent_handler">Нет приложения, чтобы это сделать.</string>
+    <string name="file_error">Не удалось сохранить файл.</string>
 </resources>
