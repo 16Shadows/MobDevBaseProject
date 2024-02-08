@@ -38,6 +38,7 @@
         android:id="@+id/activity_main_linearLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +46,7 @@
 
         <Button
             android:id="@+id/activity_main_StudentsTimetableButton"
-            style="@style/Style.DefaultButton"
+            style="?buttonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -55,7 +56,7 @@
 
         <Button
             android:id="@+id/activity_main_TeachersTimetableButton"
-            style="@style/Style.DefaultButton"
+            style="?buttonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -64,6 +65,14 @@
             android:text="@string/teachers_timetable"
             android:textAlignment="center"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/activity_main_SettingsButton"
+            style="?buttonStyle"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="?colorPrimaryVariant"
+            android:text="@string/settings" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline

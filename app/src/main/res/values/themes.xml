@@ -9,6 +9,7 @@
         <item name="colorSecondaryVariant">#0C5DFD</item>
         <item name="colorOnPrimary">#FFFFFF</item>
         <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:buttonStyle">@style/Style.DefaultButton</item>
     </style>
 
     <style name="Theme.BaseProject" parent="Base.Theme.BaseProject" />
@@ -18,6 +19,9 @@
         <item name="android:backgroundTint">?colorPrimary</item>
         <item name="android:textColor">?colorOnPrimary</item>
         <item name="android:maxWidth">@null </item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="Style.Timetable.Label" parent="Widget.AppCompat.TextView">

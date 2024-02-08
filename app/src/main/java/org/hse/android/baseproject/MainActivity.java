@@ -22,5 +22,11 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, TeachersTimetableActivity.class);
                     startActivity(intent);
                 });
+
+        findViewById(R.id.activity_main_SettingsButton)
+                .setOnClickListener(view -> {
+                    Intent intent = new Intent(this, SettingsActivity.class);
+                    startActivity(intent);
+                });
     }
 }
