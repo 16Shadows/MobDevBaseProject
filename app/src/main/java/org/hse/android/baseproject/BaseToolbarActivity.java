@@ -2,7 +2,6 @@ package org.hse.android.baseproject;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public abstract class BaseToolbarActivity extends BaseActivity {

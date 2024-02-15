@@ -21,6 +21,10 @@
     <string name="current_light_level_d">Текущий уровень освещённости: %f люкс</string>
     <string name="save">Сохранить</string>
     <string name="missing_intent_handler">Нет приложения, чтобы это сделать.</string>
+    <string name="missing_camera">У этого телефона нет камеры.</string>
     <string name="file_error">Не удалось сохранить файл.</string>
     <string name="loading">Загрузка…</string>
+    <string name="permission_request_title">Требуется разрешений</string>
+    <string name="camera_permission_explanation">Этому приложению нужен доступ к камере для:\n -Создания фотографий для картинки профиля.</string>
+    <string name="camera_permission_missing">Невозможно сделать это без доступа к камере.</string>
 </resources>
