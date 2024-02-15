@@ -27,4 +27,6 @@
     <string name="permission_request_title">Требуется разрешений</string>
     <string name="camera_permission_explanation">Этому приложению нужен доступ к камере для:\n -Создания фотографий для картинки профиля.</string>
     <string name="camera_permission_missing">Невозможно сделать это без доступа к камере.</string>
+    <string name="schedule_location">%s, %s</string>
+    <string name="schedule_now">Сегодня:</string>
 </resources>

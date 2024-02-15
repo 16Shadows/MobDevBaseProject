@@ -1,8 +1,7 @@
 package org.hse.android.baseproject;
 
-import androidx.annotation.NonNull;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,52 +9,24 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class TeachersTimetableActivity extends BaseTimetableActivity {
-    public static class Teacher {
-        private final int id;
-
-        public Teacher(int id) {
-            this.id = id;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getName() {
-            return "Teacher " + id;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return getName();
-        }
-    }
-
+public class TeachersInfoActivity extends InfoActivityBase {
     @Override
     protected void initializeLayout() {
-        setContentView(R.layout.activity_teachers_timetable);
-        toolbar = findViewById(R.id.activity_teachers_timetable_Toolbar);
+        setContentView(R.layout.activity_teachers_info);
+        toolbar = findViewById(R.id.activity_teachers_info_Toolbar);
 
-        timeLabel = findViewById(R.id.activity_teachers_timetable_time);
-        subjectLabel = findViewById(R.id.activity_teachers_timetable_subject);
-        roomLabel = findViewById(R.id.activity_teachers_timetable_room);
-        buildingLabel = findViewById(R.id.activity_teachers_timetable_building);
-        statusLabel = findViewById(R.id.activity_teachers_timetable_status);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        timeLabel = findViewById(R.id.activity_teachers_info_time);
+        subjectLabel = findViewById(R.id.activity_teachers_info_subject);
+        roomLabel = findViewById(R.id.activity_teachers_info_room);
+        buildingLabel = findViewById(R.id.activity_teachers_info_building);
+        statusLabel = findViewById(R.id.activity_teachers_info_status);
 
         List<Teacher> teachersList = new ArrayList<>();
         initTeachersList(teachersList);
 
-        Spinner spinner = findViewById(R.id.activity_teachers_timetable_teacherselect);
+        Spinner spinner = findViewById(R.id.activity_teachers_info_teacherselect);
 
         ArrayAdapter<?> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, teachersList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -75,11 +46,23 @@ public class TeachersTimetableActivity extends BaseTimetableActivity {
 
             }
         });
+
+        findViewById(R.id.activity_teachers_info_daily).setOnClickListener(v -> {
+            Intent intent = new Intent(this, TeachersScheduleDaily.class);
+            intent.putExtra(TeacherScheduleBase.EXTRA_TEACHER, (Teacher)spinner.getSelectedItem());
+            startActivity(intent);
+        });
+
+        findViewById(R.id.activity_teachers_info_weekly).setOnClickListener(v -> {
+            Intent intent = new Intent(this, TeachersScheduleWeekly.class);
+            intent.putExtra(TeacherScheduleBase.EXTRA_TEACHER, (Teacher)spinner.getSelectedItem());
+            startActivity(intent);
+        });
     }
 
     @Override
     protected void updateTick() {
-        setTime(new Date());
+        super.updateTick();
 
         //Dummy implementation
         setSubject(null);

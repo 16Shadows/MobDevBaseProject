@@ -8,16 +8,10 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/activity_main_Toolbar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Toolbar"
         app:title="@string/app_name"
-        app:titleTextColor="?colorOnPrimary" />
+        app:titleTextColor="?colorOnPrimary"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/activity_main_HSELogoView"

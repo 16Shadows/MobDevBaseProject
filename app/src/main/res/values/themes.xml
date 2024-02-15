@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.BaseProject" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
@@ -9,12 +9,24 @@
         <item name="colorSecondaryVariant">#0C5DFD</item>
         <item name="colorOnPrimary">#FFFFFF</item>
         <item name="colorOnSecondary">#FFFFFF</item>
-        <item name="android:buttonStyle">@style/Style.DefaultButton</item>
+        <item name="android:buttonStyle">@style/DefaultButton</item>
     </style>
 
     <style name="Theme.BaseProject" parent="Base.Theme.BaseProject" />
 
-    <style name="Style.DefaultButton" parent="Widget.Material3.Button">
+    <style name="Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="titleTextColor">?colorOnPrimary</item>
+        <item name="android:theme">?attr/actionBarTheme</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
+    <style name="DefaultButton" parent="Widget.Material3.Button">
         <item name="cornerRadius">0dp</item>
         <item name="android:backgroundTint">?colorPrimary</item>
         <item name="android:textColor">?colorOnPrimary</item>
@@ -24,15 +36,42 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="Style.Timetable.Label" parent="Widget.AppCompat.TextView">
+    <style name="Info.Label" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">?colorSecondary</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="Style.Timetable.Value" parent="Widget.AppCompat.TextView">
+    <style name="Info.Value" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Schedule.LessonType" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Schedule.LessonName" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Schedule.LessonLocation" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Schedule.Time" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">#989898</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Schedule.LessonTeacher" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">#989898</item>
         <item name="android:textSize">14sp</item>
     </style>
 </resources>

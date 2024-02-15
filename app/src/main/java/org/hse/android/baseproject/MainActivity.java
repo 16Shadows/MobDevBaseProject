@@ -1,25 +1,22 @@
 package org.hse.android.baseproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ActivityBase {
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initializeLayout() {
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.activity_main_StudentsTimetableButton)
                 .setOnClickListener(view -> {
-                    Intent intent = new Intent(this, StudentsTimetableActivity.class);
+                    Intent intent = new Intent(this, StudentsInfoActivity.class);
                     startActivity(intent);
                 });
 
         findViewById(R.id.activity_main_TeachersTimetableButton)
                 .setOnClickListener(view -> {
-                    Intent intent = new Intent(this, TeachersTimetableActivity.class);
+                    Intent intent = new Intent(this, TeachersInfoActivity.class);
                     startActivity(intent);
                 });
 

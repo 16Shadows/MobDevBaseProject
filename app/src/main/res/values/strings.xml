@@ -26,4 +26,6 @@
     <string name="permission_request_title">Permission required</string>
     <string name="camera_permission_explanation">This app requires camera permission to:\n -Take photos for your profile picture.</string>
     <string name="camera_permission_missing">Can\'t do this without camera permission.</string>
+    <string name="schedule_location">%s, %s</string>
+    <string name="schedule_now">Today:</string>
 </resources>

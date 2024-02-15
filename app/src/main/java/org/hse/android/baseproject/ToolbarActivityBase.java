@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
 
-public abstract class BaseToolbarActivity extends BaseActivity {
+public abstract class ToolbarActivityBase extends ActivityBase {
     protected Toolbar toolbar;
 
     @Override

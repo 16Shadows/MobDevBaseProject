@@ -1,9 +1,8 @@
 package org.hse.android.baseproject;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,58 +11,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class StudentsTimetableActivity extends BaseTimetableActivity {
-    public static class Group {
-        private final int id;
-        private final String name;
-
-        public Group(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return getName();
-        }
-    }
-
+public class StudentsInfoActivity extends InfoActivityBase {
     private TextView teacherLabel;
 
     @Override
     protected void initializeLayout() {
-        setContentView(R.layout.activity_students_timetable);
-        toolbar = findViewById(R.id.activity_students_timetable_Toolbar);
+        setContentView(R.layout.activity_students_info);
+        toolbar = findViewById(R.id.activity_students_info_Toolbar);
 
-        timeLabel = findViewById(R.id.activity_students_timetable_time);
-        subjectLabel = findViewById(R.id.activity_students_timetable_subject);
-        roomLabel = findViewById(R.id.activity_students_timetable_room);
-        buildingLabel = findViewById(R.id.activity_students_timetable_building);
-        statusLabel = findViewById(R.id.activity_students_timetable_status);
-        teacherLabel = findViewById(R.id.activity_students_timetable_teacher);
-    }
+        timeLabel = findViewById(R.id.activity_students_info_time);
+        subjectLabel = findViewById(R.id.activity_students_info_subject);
+        roomLabel = findViewById(R.id.activity_students_info_room);
+        buildingLabel = findViewById(R.id.activity_students_info_building);
+        statusLabel = findViewById(R.id.activity_students_info_status);
+        teacherLabel = findViewById(R.id.activity_students_info_teacher);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        List<Group> groupsList = new ArrayList<>();
+        List<StudentsGroup> groupsList = new ArrayList<>();
         initGroupsList(groupsList);
 
-        Spinner spinner = findViewById(R.id.activity_students_timetable_groupselect);
+        Spinner spinner = findViewById(R.id.activity_students_info_groupselect);
 
         ArrayAdapter<?> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groupsList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -73,7 +42,7 @@ public class StudentsTimetableActivity extends BaseTimetableActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Group group = (Group) parent.getAdapter().getItem(position);
+                StudentsGroup group = (StudentsGroup) parent.getAdapter().getItem(position);
                 if (group != null)
                     InstantToast.show(view.getContext(), group.getName(), Toast.LENGTH_SHORT);
             }
@@ -83,11 +52,23 @@ public class StudentsTimetableActivity extends BaseTimetableActivity {
 
             }
         });
+
+        findViewById(R.id.activity_students_info_daily).setOnClickListener(v -> {
+            Intent intent = new Intent(this, StudentsScheduleDaily.class);
+            intent.putExtra(StudentsScheduleBase.EXTRA_GROUP, (StudentsGroup)spinner.getSelectedItem());
+            startActivity(intent);
+        });
+
+        findViewById(R.id.activity_students_info_weekly).setOnClickListener(v -> {
+            Intent intent = new Intent(this, StudentsScheduleWeekly.class);
+            intent.putExtra(StudentsScheduleBase.EXTRA_GROUP, (StudentsGroup)spinner.getSelectedItem());
+            startActivity(intent);
+        });
     }
 
     @Override
     protected void updateTick() {
-        setTime(new Date());
+        super.updateTick();
 
         //Dummy implementation
         setSubject(null);
@@ -104,7 +85,7 @@ public class StudentsTimetableActivity extends BaseTimetableActivity {
         teacherLabel.setText(teacher);
     }
 
-    private void initGroupsList(List<Group> list) {
+    private void initGroupsList(List<StudentsGroup> list) {
         int id = 0;
 
         String[] courses = {"ПИ", "БИ", "И", "Э", "ИЯ"};
@@ -116,7 +97,7 @@ public class StudentsTimetableActivity extends BaseTimetableActivity {
                     years) {
                 for (Integer group :
                         groups) {
-                    list.add(new Group(id++, String.format(Locale.getDefault(), "%s-%d-%d", course, year, group)));
+                    list.add(new StudentsGroup(id++, String.format(Locale.getDefault(), "%s-%d-%d", course, year, group)));
                 }
             }
         }

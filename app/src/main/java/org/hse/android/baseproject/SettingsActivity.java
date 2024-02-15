@@ -13,7 +13,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -27,15 +26,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class SettingsActivity extends BaseToolbarActivity implements SensorEventListener {
+public class SettingsActivity extends ToolbarActivityBase implements SensorEventListener {
     protected final String TAG = "SettingsActivity";
     protected final String SETTINGS_FOLDER = "/settings/";
     protected final String AVATAR_FILE = SETTINGS_FOLDER + "avatar";
     protected final String AVATAR_TEMP_FILE = SETTINGS_FOLDER + "avatar_temporary";
     protected final String PREFS_KEY_USERNAME = "username";
 
-    protected ActivityResultLauncher<Uri> takeAvatarPictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), this::avatarPictureTaken);
-    protected ActivityResultLauncher<String> getCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), this::dispatchTakePicture);
+    protected final ActivityResultLauncher<Uri> takeAvatarPictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), this::avatarPictureTaken);
+    protected final ActivityResultLauncher<String> getCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), this::dispatchTakePicture);
 
     protected ImageView avatarView;
     protected TextView nameView;
@@ -50,21 +49,16 @@ public class SettingsActivity extends BaseToolbarActivity implements SensorEvent
     protected void initializeLayout() {
         setContentView(R.layout.activity_settings);
 
+        preferences = getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(this), MODE_PRIVATE);
+        sensorManager = getSystemService(SensorManager.class);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+
         toolbar = findViewById(R.id.activity_settings_Toolbar);
 
         avatarView = findViewById(R.id.activity_settings_Avatar);
         nameView = findViewById(R.id.activity_settings_username);
         lightLevel = findViewById(R.id.activity_settings_lightlevel);
         sensorsList = findViewById(R.id.activity_settings_sensorsList);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        preferences = getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(this), MODE_PRIVATE);
-        sensorManager = getSystemService(SensorManager.class);
-        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         findViewById(R.id.activity_settings_takePictureButton).setOnClickListener(this::checkCameraPermission);
         findViewById(R.id.activity_settings_SaveButton).setOnClickListener(this::saveSettings);
@@ -78,7 +72,7 @@ public class SettingsActivity extends BaseToolbarActivity implements SensorEvent
         StringBuilder sList = new StringBuilder();
         List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
         for (Sensor s:
-             sensors) {
+                sensors) {
             sList.append(s.getName());
             sList.append('\n');
         }

@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import java.util.Date;
 import java.util.Locale;
 
-public abstract class BaseTimetableActivity extends BaseToolbarActivity {
+public abstract class InfoActivityBase extends ToolbarActivityBase {
     protected TextView timeLabel;
     protected TextView subjectLabel;
     protected TextView roomLabel;
@@ -48,11 +48,17 @@ public abstract class BaseTimetableActivity extends BaseToolbarActivity {
         unregisterReceiver(timeTickReceiver);
     }
 
-    protected abstract void updateTick();
+    protected void updateTick() {
+        TimeQuery.requestTime(date -> runOnUiThread(() -> setTime(date)));
+    }
 
-    protected void setTime(Date moment) {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm EEEE", Locale.getDefault());
-        timeLabel.setText(formatter.format(moment));
+    protected void setTime(@Nullable Date moment) {
+        if (moment == null)
+            timeLabel.setText(R.string.loading);
+        else {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm EEEE", Locale.getDefault());
+            timeLabel.setText(formatter.format(moment));
+        }
     }
 
     protected void setSubject(@Nullable CharSequence name) {

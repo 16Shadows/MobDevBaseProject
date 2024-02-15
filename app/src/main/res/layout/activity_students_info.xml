@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StudentsInfoActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activity_students_info_Toolbar"
+        style="@style/Toolbar"
+        app:title="@string/app_name"
+        app:titleTextColor="?colorOnPrimary"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/activity_students_info_groupselect_label"
+        style="@style/Info.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:labelFor="@id/activity_students_info_groupselect"
+        android:text="@string/select_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_info_Toolbar" />
+
+    <Spinner
+        android:id="@+id/activity_students_info_groupselect"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_info_groupselect_label" />
+
+    <TextView
+        android:id="@+id/activity_students_info_timeLabel"
+        style="@style/Info.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/time_s"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_info_groupselect" />
+
+    <TextView
+        android:id="@+id/activity_students_info_time"
+        style="@style/Info.Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/activity_students_info_timeLabel"
+        app:layout_constraintTop_toTopOf="@id/activity_students_info_timeLabel" />
+
+    <TextView
+        android:id="@+id/activity_students_info_status"
+        style="@style/Info.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_info_timeLabel" />
+
+    <TextView
+        android:id="@+id/activity_students_info_subjectLabel"
+        style="@style/Info.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/subject_s"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_info_status" />
+
+    <TextView
+        android:id="@+id/activity_students_info_subject"
+        style="@style/Info.Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@+id/activity_students_info_subjectLabel"
+        app:layout_constraintTop_toTopOf="@id/activity_students_info_subjectLabel" />
+
+    <TextView
+        android:id="@+id/activity_students_info_roomLabel"
+        style="@style/Info.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/room_s"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_info_subjectLabel" />
+
+    <TextView
+        android:id="@+id/activity_students_info_room"
+        style="@style/Info.Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/activity_students_info_roomLabel"
+        app:layout_constraintTop_toTopOf="@id/activity_students_info_roomLabel" />
+
+    <TextView
+        android:id="@+id/activity_students_info_buildingLabel"
+        style="@style/Info.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/building_s"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_info_roomLabel" />
+
+    <TextView
+        android:id="@+id/activity_students_info_building"
+        style="@style/Info.Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/activity_students_info_buildingLabel"
+        app:layout_constraintTop_toTopOf="@id/activity_students_info_buildingLabel" />
+
+    <TextView
+        android:id="@+id/activity_students_info_teacherLabel"
+        style="@style/Info.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/teacher_s"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_info_buildingLabel" />
+
+    <TextView
+        android:id="@+id/activity_students_info_teacher"
+        style="@style/Info.Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/activity_students_info_teacherLabel"
+        app:layout_constraintTop_toTopOf="@id/activity_students_info_teacherLabel" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_info_teacherLabel">
+
+        <Button
+            android:id="@+id/activity_students_info_daily"
+            style="?buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:text="@string/daily_timetable" />
+
+        <Button
+            android:id="@+id/activity_students_info_weekly"
+            style="?buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/weekly_timetable" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
