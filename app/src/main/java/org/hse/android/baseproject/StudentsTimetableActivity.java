@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -64,12 +65,12 @@ public class StudentsTimetableActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.icon_back);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        timeLabel = findViewById(R.id.activity_students_timetable_time);
-        subjectLabel = findViewById(R.id.activity_students_timetable_subject);
-        roomLabel = findViewById(R.id.activity_students_timetable_room);
-        buildingLabel = findViewById(R.id.activity_students_timetable_building);
-        statusLabel = findViewById(R.id.activity_students_timetable_status);
-        teacherLabel = findViewById(R.id.activity_students_timetable_teacher);
+        timeLabel = findViewById(R.id.activity_students_timetable_timeLabel);
+        subjectLabel = findViewById(R.id.activity_students_timetable_subjectLabel);
+        roomLabel = findViewById(R.id.activity_students_timetable_roomLabel);
+        buildingLabel = findViewById(R.id.activity_students_timetable_buildingLabel);
+        statusLabel = findViewById(R.id.activity_students_timetable_statusLabel);
+        teacherLabel = findViewById(R.id.activity_students_timetable_teacherLabel);
 
         List<Group> groupsList = new ArrayList<>();
         initGroupsList(groupsList);
@@ -84,7 +85,7 @@ public class StudentsTimetableActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Group group = (Group)parent.getAdapter().getItem(position);
+                Group group = (Group) parent.getAdapter().getItem(position);
                 if (group != null)
                     InstantToast.show(view.getContext(), group.getName(), Toast.LENGTH_SHORT);
             }
@@ -128,22 +129,21 @@ public class StudentsTimetableActivity extends AppCompatActivity {
         setTeacher("Undefined");
     }
 
-    private void setTime(Date moment)
-    {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm EEE", Locale.getDefault());
-        timeLabel.setText( String.format( getResources().getString(R.string.time_s),  formatter.format(moment) ) );
+    private void setTime(Date moment) {
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm EEEE", Locale.getDefault());
+        timeLabel.setText(Html.fromHtml(String.format(getResources().getString(R.string.time_s), formatter.format(moment)), Html.FROM_HTML_MODE_COMPACT));
     }
 
     private void setSubject(CharSequence name) {
-        subjectLabel.setText( String.format( getResources().getString(R.string.subject_s), name ) );
+        subjectLabel.setText(Html.fromHtml(String.format(getResources().getString(R.string.subject_s), name), Html.FROM_HTML_MODE_COMPACT));
     }
 
     private void setRoom(CharSequence room) {
-        roomLabel.setText( String.format( getResources().getString(R.string.room_s), room ) );
+        roomLabel.setText(Html.fromHtml(String.format(getResources().getString(R.string.room_s), room), Html.FROM_HTML_MODE_COMPACT));
     }
 
     private void setBuilding(CharSequence building) {
-        buildingLabel.setText( String.format( getResources().getString(R.string.subject_s), building ) );
+        buildingLabel.setText(Html.fromHtml(String.format(getResources().getString(R.string.building_s), building), Html.FROM_HTML_MODE_COMPACT));
     }
 
     private void setStatus(Boolean ongoingLesson) {
@@ -156,22 +156,21 @@ public class StudentsTimetableActivity extends AppCompatActivity {
     }
 
     private void setTeacher(CharSequence teacher) {
-        teacherLabel.setText( String.format( getResources().getString(R.string.teacher_s), teacher ) );
+        teacherLabel.setText(String.format(getResources().getString(R.string.teacher_s), teacher));
     }
 
     private void initGroupsList(List<Group> list) {
         int id = 0;
 
-        String[] courses = { "ПИ", "БИ", "И", "Э", "ИЯ" };
-        Integer[] years = { 20, 21, 22, 23 };
+        String[] courses = {"ПИ", "БИ", "И", "Э", "ИЯ"};
+        Integer[] years = {20, 21, 22, 23};
         Integer[] groups = {1, 2, 3};
 
-        for (String course:
-             courses) {
-            for (Integer year:
-                 years) {
-                for (Integer group:
-                    groups) {
+        for (String course : courses) {
+            for (Integer year :
+                    years) {
+                for (Integer group :
+                        groups) {
                     list.add(new Group(id++, String.format(Locale.getDefault(), "%s-%d-%d", course, year, group)));
                 }
             }

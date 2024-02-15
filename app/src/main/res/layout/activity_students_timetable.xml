@@ -19,93 +19,107 @@
         app:title="@string/app_name"
         app:titleTextColor="?colorOnPrimary" />
 
+    <TextView
+        android:id="@+id/activity_students_timetable_groupselect_label"
+        style="@style/Style.Timetable.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:labelFor="@id/activity_students_timetable_groupselect"
+        android:text="@string/select_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_timetable_Toolbar" />
+
+    <Spinner
+        android:id="@+id/activity_students_timetable_groupselect"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_timetable_groupselect_label" />
+
+    <TextView
+        android:id="@+id/activity_students_timetable_timeLabel"
+        style="@style/Style.Timetable.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/time_s"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_timetable_groupselect" />
+
+    <TextView
+        android:id="@+id/activity_students_timetable_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/activity_students_timetable_timeLabel"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_timetable_groupselect" />
+
+    <TextView
+        android:id="@+id/activity_students_timetable_statusLabel"
+        style="@style/Style.Timetable.Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_timetable_timeLabel" />
+
+    <TextView
+        android:id="@+id/activity_students_timetable_subjectLabel"
+        style="@style/Style.Timetable.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subject_s"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_timetable_statusLabel"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <TextView
+        android:id="@+id/activity_students_timetable_roomLabel"
+        style="@style/Style.Timetable.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/room_s"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_timetable_subjectLabel"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <TextView
+        android:id="@+id/activity_students_timetable_buildingLabel"
+        style="@style/Style.Timetable.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/building_s"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_timetable_roomLabel"
+        tools:layout_editor_absoluteX="10dp" />
+
+    <TextView
+        android:id="@+id/activity_students_timetable_teacherLabel"
+        style="@style/Style.Timetable.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/teacher_s"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_timetable_buildingLabel"
+        tools:layout_editor_absoluteX="10dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_students_timetable_Toolbar">
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_students_timetable_teacherLabel">
 
-        <TextView
-            android:id="@+id/activity_students_timetable_groupselect_label"
-            style="@style/Style.Timetable.Label"
+        <Button
+            android:id="@+id/activity_students_timetable_daily"
+            style="?buttonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:labelFor="@id/activity_students_timetable_groupselect"
-            android:text="@string/select_group" />
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:text="@string/daily_timetable" />
 
-        <Spinner
-            android:id="@+id/activity_students_timetable_groupselect"
-            android:layout_width="match_parent"
-            android:layout_height="48dp" />
-
-        <TextView
-            android:id="@+id/activity_students_timetable_time"
-            style="@style/Style.Timetable.Label"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/activity_students_timetable_weekly"
+            style="?buttonStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/time_s" />
-
-        <TextView
-            android:id="@+id/activity_students_timetable_status"
-            style="@style/Style.Timetable.Label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/activity_students_timetable_subject"
-            style="@style/Style.Timetable.Label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/subject_s" />
-
-        <TextView
-            android:id="@+id/activity_students_timetable_room"
-            style="@style/Style.Timetable.Label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/room_s" />
-
-        <TextView
-            android:id="@+id/activity_students_timetable_building"
-            style="@style/Style.Timetable.Label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/building_s" />
-
-        <TextView
-            android:id="@+id/activity_students_timetable_teacher"
-            style="@style/Style.Timetable.Label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/teacher_s" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/activity_students_timetable_daily"
-                style="?buttonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:text="@string/daily_timetable" />
-
-            <Button
-                android:id="@+id/activity_students_timetable_weekly"
-                style="?buttonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/weekly_timetable" />
-        </LinearLayout>
-
+            android:layout_weight="1"
+            android:text="@string/weekly_timetable" />
     </LinearLayout>
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>

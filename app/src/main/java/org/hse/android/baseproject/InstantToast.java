@@ -3,8 +3,6 @@ package org.hse.android.baseproject;
 import android.content.Context;
 import android.widget.Toast;
 
-import androidx.annotation.UiContext;
-
 public class InstantToast {
     private static Toast lastToast;
 

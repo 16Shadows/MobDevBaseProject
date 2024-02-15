@@ -4,11 +4,11 @@
     <string name="students_timetable">Расписание для студентов</string>
     <string name="teachers_timetable">Расписание для преподавателей</string>
     <string name="select_teacher">Выберите преподавателя:</string>
-    <string name="time_s">Время: %s</string>
-    <string name="subject_s">Предмет: %s</string>
-    <string name="room_s">Кабинет: %s</string>
-    <string name="building_s">Корпус: %s</string>
-    <string name="teacher_s">Преподаватель: %s</string>
+    <string name="time_s">Время:</string>
+    <string name="subject_s">Предмет:</string>
+    <string name="room_s">Кабинет:</string>
+    <string name="building_s">Корпус:</string>
+    <string name="teacher_s">Преподаватель:</string>
     <string name="daily_timetable">Расписание на день</string>
     <string name="weekly_timetable">Расписание на неделю</string>
     <string name="status_ongoing_lesson">Идёт пара</string>
@@ -22,4 +22,5 @@
     <string name="save">Сохранить</string>
     <string name="missing_intent_handler">Нет приложения, чтобы это сделать.</string>
     <string name="file_error">Не удалось сохранить файл.</string>
+    <string name="loading">Загрузка…</string>
 </resources>
