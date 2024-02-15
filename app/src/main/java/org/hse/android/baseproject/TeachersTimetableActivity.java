@@ -1,28 +1,19 @@
 package org.hse.android.baseproject;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-public class TeachersTimetableActivity extends AppCompatActivity {
+public class TeachersTimetableActivity extends BaseTimetableActivity {
     public static class Teacher {
         private final int id;
 
@@ -45,27 +36,21 @@ public class TeachersTimetableActivity extends AppCompatActivity {
         }
     }
 
-    private BroadcastReceiver timeTickReceiver;
-    private TextView timeLabel;
-    private TextView subjectLabel;
-    private TextView roomLabel;
-    private TextView buildingLabel;
-    private TextView statusLabel;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initializeLayout() {
         setContentView(R.layout.activity_teachers_timetable);
-
-        Toolbar toolbar = findViewById(R.id.activity_teachers_timetable_Toolbar);
-        toolbar.setNavigationIcon(R.drawable.icon_back);
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar = findViewById(R.id.activity_teachers_timetable_Toolbar);
 
         timeLabel = findViewById(R.id.activity_teachers_timetable_time);
         subjectLabel = findViewById(R.id.activity_teachers_timetable_subject);
         roomLabel = findViewById(R.id.activity_teachers_timetable_room);
         buildingLabel = findViewById(R.id.activity_teachers_timetable_building);
         statusLabel = findViewById(R.id.activity_teachers_timetable_status);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         List<Teacher> teachersList = new ArrayList<>();
         initTeachersList(teachersList);
@@ -90,64 +75,17 @@ public class TeachersTimetableActivity extends AppCompatActivity {
 
             }
         });
-
-        updateTick();
-
-        timeTickReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                updateTick();
-            }
-        };
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        registerReceiver(timeTickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        unregisterReceiver(timeTickReceiver);
-    }
-
-    private void updateTick() {
+    protected void updateTick() {
         setTime(new Date());
 
         //Dummy implementation
-        setSubject("Undefined");
-        setRoom("Undefined");
-        setBuilding("Undefined");
-        setStatus(false);
-    }
-
-    private void setTime(Date moment)
-    {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm EEE", Locale.getDefault());
-        timeLabel.setText( String.format( getResources().getString(R.string.time_s),  formatter.format(moment) ) );
-    }
-
-    private void setSubject(CharSequence name) {
-        subjectLabel.setText( String.format( getResources().getString(R.string.subject_s), name ) );
-    }
-
-    private void setRoom(CharSequence room) {
-        roomLabel.setText( String.format( getResources().getString(R.string.room_s), room ) );
-    }
-
-    private void setBuilding(CharSequence building) {
-        buildingLabel.setText( String.format( getResources().getString(R.string.subject_s), building ) );
-    }
-
-    private void setStatus(Boolean ongoingLesson) {
-        int id;
-        if (ongoingLesson)
-            id = R.string.status_ongoing_lesson;
-        else
-            id = R.string.status_no_lesson;
-        statusLabel.setText(id);
+        setSubject(null);
+        setRoom(null);
+        setBuilding(null);
+        setStatus(null);
     }
 
     private void initTeachersList(List<Teacher> list) {

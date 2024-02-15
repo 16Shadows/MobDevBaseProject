@@ -2,13 +2,12 @@ package org.hse.android.baseproject;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
-import androidx.core.content.res.ResourcesCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -28,7 +27,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class SettingsActivity extends AppCompatActivity implements SensorEventListener {
+public class SettingsActivity extends BaseToolbarActivity implements SensorEventListener {
     protected final String TAG = "SettingsActivity";
     protected final String SETTINGS_FOLDER = "/settings/";
     protected final String AVATAR_FILE = SETTINGS_FOLDER + "avatar";
@@ -36,6 +35,7 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
     protected final String PREFS_KEY_USERNAME = "username";
 
     protected ActivityResultLauncher<Uri> takeAvatarPictureLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), this::avatarPictureTaken);
+    protected ActivityResultLauncher<String> getCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), this::dispatchTakePicture);
 
     protected ImageView avatarView;
     protected TextView nameView;
@@ -47,24 +47,26 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
     protected Sensor lightSensor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initializeLayout() {
         setContentView(R.layout.activity_settings);
 
-        preferences = getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(this), MODE_PRIVATE);
-        sensorManager = (SensorManager)getSystemService(SensorManager.class);
-        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-
-        Toolbar toolbar = findViewById(R.id.activity_settings_Toolbar);
-        toolbar.setNavigationIcon(R.drawable.icon_back);
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar = findViewById(R.id.activity_settings_Toolbar);
 
         avatarView = findViewById(R.id.activity_settings_Avatar);
         nameView = findViewById(R.id.activity_settings_username);
         lightLevel = findViewById(R.id.activity_settings_lightlevel);
         sensorsList = findViewById(R.id.activity_settings_sensorsList);
+    }
 
-        findViewById(R.id.activity_settings_takePictureButton).setOnClickListener(this::dispatchTakePicture);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        preferences = getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(this), MODE_PRIVATE);
+        sensorManager = getSystemService(SensorManager.class);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+
+        findViewById(R.id.activity_settings_takePictureButton).setOnClickListener(this::checkCameraPermission);
         findViewById(R.id.activity_settings_SaveButton).setOnClickListener(this::saveSettings);
 
         File avatar = getAvatarFile();
@@ -170,8 +172,34 @@ public class SettingsActivity extends AppCompatActivity implements SensorEventLi
         avatarView.setImageURI(Uri.fromFile(getTempAvatarFile()));
     }
 
-    protected void dispatchTakePicture(View v)
+    protected boolean hasAnyCamera() {
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+    }
+
+    protected void checkCameraPermission(View v) {
+        if (!hasAnyCamera())
+        {
+            InstantToast.show(this, R.string.missing_camera, Toast.LENGTH_SHORT);
+            return;
+        }
+        PermissionsManager.shouldRequestPermission(this, Manifest.permission.CAMERA, this::requestCameraPermission, R.string.camera_permission_explanation);
+    }
+
+    protected void requestCameraPermission(boolean shouldRequest) {
+        if (shouldRequest)
+            getCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+        else
+            dispatchTakePicture(true);
+    }
+
+    protected void dispatchTakePicture(boolean hasPermission)
     {
+        if (!hasPermission)
+        {
+            InstantToast.show(this, R.string.camera_permission_missing, Toast.LENGTH_SHORT);
+            return;
+        }
+
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if (intent.resolveActivity(getPackageManager()) == null)

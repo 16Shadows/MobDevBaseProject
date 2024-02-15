@@ -20,6 +20,10 @@
     <string name="current_light_level_d">Current light level: %f lux</string>
     <string name="save">Save</string>
     <string name="missing_intent_handler">Missing application capable of this.</string>
+    <string name="missing_camera">This phone doesn\'t have a camera.</string>
     <string name="file_error">Couldn\'t save file.</string>
     <string name="loading">Loading…</string>
+    <string name="permission_request_title">Permission required</string>
+    <string name="camera_permission_explanation">This app requires camera permission to:\n -Take photos for your profile picture.</string>
+    <string name="camera_permission_missing">Can\'t do this without camera permission.</string>
 </resources>
