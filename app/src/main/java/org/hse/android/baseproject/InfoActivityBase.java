@@ -4,12 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.icu.text.DateFormatSymbols;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -57,6 +59,7 @@ public abstract class InfoActivityBase extends ToolbarActivityBase {
             timeLabel.setText(R.string.loading);
         else {
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm EEEE", Locale.getDefault());
+            SimpleDateFormatEx.capitalizeWeekdays(formatter);
             timeLabel.setText(formatter.format(moment));
         }
     }

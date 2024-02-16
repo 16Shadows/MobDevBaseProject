@@ -11,6 +11,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.icu.text.DateFormatSymbols;
 import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -95,7 +97,9 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
 
             lessonsAdapter = new LessonsAdapter();
 
-            lessonsList.setLayoutManager(new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false));
+            LinearLayoutManager lm = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
+            lm.setRecycleChildrenOnDetach(true);
+            lessonsList.setLayoutManager(lm);
             lessonsList.setRecycledViewPool(lessonsPool);
             lessonsList.setAdapter(lessonsAdapter);
             lessonsList.addItemDecoration(new DividerItemDecoration(itemView.getContext(), DividerItemDecoration.VERTICAL));
@@ -173,6 +177,7 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
 
         initializeData();
 
+        setTime(null);
         updateTick();
 
         timeTickReceiver = new BroadcastReceiver() {
@@ -204,6 +209,7 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
             timeLabel.setText(R.string.loading);
         else {
             SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd MMMM", Locale.getDefault());
+            SimpleDateFormatEx.capitalizeWeekdays(formatter);
             timeLabel.setText(formatter.format(moment));
         }
     }
