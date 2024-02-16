@@ -5,6 +5,8 @@ import android.icu.text.SimpleDateFormat;
 
 import java.util.Arrays;
 
+//Test
+
 public class SimpleDateFormatEx {
     public static void capitalizeWeekdays(SimpleDateFormat formatter) {
         DateFormatSymbols symbols = formatter.getDateFormatSymbols();
