@@ -2,6 +2,7 @@ package org.hse.android.baseproject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +12,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.icu.text.DateFormatSymbols;
 import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -94,6 +93,7 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
 
             currentDay = itemView.findViewById(R.id.activity_schedule_day_currentDay);
             lessonsList = itemView.findViewById(R.id.activity_schedule_day_Lessons);
+            ViewCompat.setNestedScrollingEnabled(lessonsList, false);
 
             lessonsAdapter = new LessonsAdapter();
 
