@@ -29,4 +29,5 @@
     <string name="camera_permission_missing">Невозможно сделать это без доступа к камере.</string>
     <string name="schedule_location">%s, %s</string>
     <string name="schedule_now">Сегодня:</string>
+    <string name="nothing">Ничего</string>
 </resources>

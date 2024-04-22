@@ -179,10 +179,10 @@ public class SettingsActivity extends ToolbarActivityBase implements SensorEvent
         PermissionsManager.shouldRequestPermission(this, Manifest.permission.CAMERA, this::requestCameraPermission, R.string.camera_permission_explanation);
     }
 
-    protected void requestCameraPermission(boolean shouldRequest) {
-        if (shouldRequest)
+    protected void requestCameraPermission(PermissionsManager.ShouldRequestPermissionResult result) {
+        if (result == PermissionsManager.ShouldRequestPermissionResult.PROCEED)
             getCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
-        else
+        else if (result == PermissionsManager.ShouldRequestPermissionResult.REQUEST_PERMISSION)
             dispatchTakePicture(true);
     }
 

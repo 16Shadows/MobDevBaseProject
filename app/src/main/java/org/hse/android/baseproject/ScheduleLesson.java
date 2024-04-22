@@ -2,57 +2,54 @@ package org.hse.android.baseproject;
 
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.Relation;
+import androidx.room.TypeConverters;
 
 import java.util.Locale;
 
+@Entity(tableName = "lesson")
 public class ScheduleLesson {
-    protected final Calendar startMomentUtc;
-    protected final Calendar endMomentUtc;
-    protected final String name;
-    protected final String type;
-    protected final String room;
-    protected final String building;
-    protected final Teacher teacher;
+    @PrimaryKey(autoGenerate = true)
+    public int id;
 
-    public ScheduleLesson(Calendar startMomentUtc, Calendar endMomentUtc, String name, String type, String room, String building, Teacher teacher) {
-        this.startMomentUtc = startMomentUtc;
-        this.endMomentUtc = endMomentUtc;
-        this.name = name;
-        this.type = type;
-        this.room = room;
-        this.building = building;
-        this.teacher = teacher;
-    }
+    @TypeConverters(DatabaseProvider.HseTimetableDatabase.CalendarConverter.class)
+    @NonNull
+    public Calendar startMomentUtc = Calendar.getInstance(TimeZone.GMT_ZONE);
 
-    protected static SimpleDateFormat getDateFormatter() {
-        return new SimpleDateFormat("HH:mm", Locale.getDefault());
-    }
+    @TypeConverters(DatabaseProvider.HseTimetableDatabase.CalendarConverter.class)
+    @NonNull
+    public Calendar endMomentUtc = Calendar.getInstance(TimeZone.GMT_ZONE);
 
-    public String getStartTime() {
-        return getDateFormatter().format(startMomentUtc);
-    }
+    @NonNull
+    public String name = "UNKNOWN";
 
-    public String getEndTime() {
-        return getDateFormatter().format(endMomentUtc);
-    }
+    @NonNull
+    public String type = "UNKNOWN";
 
-    public String getName() {
-        return name;
-    }
+    @NonNull
+    public String room = "UNKNOWN";
 
-    public String getType() {
-        return type;
-    }
+    @NonNull
+    public String building = "UNKNOWN";
 
-    public String getRoom() {
-        return room;
-    }
+    public int teacherId;
 
-    public String getBuilding() {
-        return building;
-    }
+    public int groupId;
+}
 
-    public String getTeacherName() {
-        return teacher.getName();
-    }
+class ScheduleLessonWithTeacher {
+    @Embedded
+    public ScheduleLesson lesson;
+    @Relation(
+            parentColumn = "teacherId",
+            entityColumn = "id"
+    )
+    public Teacher teacher;
 }

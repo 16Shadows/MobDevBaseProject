@@ -13,6 +13,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,8 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
 
     public class LessonViewHolder extends RecyclerView.ViewHolder {
 
+        protected final SimpleDateFormat formatter;
+
         protected TextView startTime;
         protected TextView endTime;
         protected TextView type;
@@ -35,9 +39,11 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
 
         public LessonViewHolder(@NonNull View itemView) {
             super(itemView);
+            formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            SimpleDateFormatEx.capitalizeWeekdays(formatter);
         }
 
-        public void bind(@Nullable ScheduleLesson lesson) {
+        public void bind(@Nullable ScheduleLessonWithTeacher lesson) {
             if (lesson == null) {
                 startTime.setText(R.string.loading);
                 endTime.setText(R.string.loading);
@@ -46,21 +52,27 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
                 location.setText(R.string.loading);
             }
             else {
-                startTime.setText(lesson.getStartTime());
-                endTime.setText(lesson.getEndTime());
-                type.setText(lesson.getType());
-                name.setText(lesson.getName());
-                location.setText( String.format( getResources().getString(R.string.schedule_location), lesson.getRoom(), lesson.getBuilding() ) );
+                startTime.setText(formatAsLocalTime(lesson.lesson.startMomentUtc));
+                endTime.setText(formatAsLocalTime(lesson.lesson.endMomentUtc));
+                type.setText(lesson.lesson.type);
+                name.setText(lesson.lesson.name);
+                location.setText( String.format( getResources().getString(R.string.schedule_location), lesson.lesson.room, lesson.lesson.building ) );
             }
+        }
+
+        protected String formatAsLocalTime(Calendar time) {
+            Calendar c = (Calendar)time.clone();
+            c.setTimeZone(TimeZone.getDefault());
+            return formatter.format(c);
         }
     }
 
     public class LessonsAdapter extends RecyclerView.Adapter<LessonViewHolder> {
         @Nullable
-        protected List<ScheduleLesson> lessons;
+        protected List<ScheduleLessonWithTeacher> lessons;
 
         @SuppressLint("NotifyDataSetChanged")
-        void setData(List<ScheduleLesson> lessons) {
+        void setData(List<ScheduleLessonWithTeacher> lessons) {
             this.lessons = lessons;
             notifyDataSetChanged();
         }
@@ -107,7 +119,7 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
 
         public void bind(@Nullable ScheduleDay day) {
             if (day != null) {
-                currentDay.setText(day.getName());
+                currentDay.setText(day.getDisplayDate());
                 lessonsAdapter.setData(day.getLessons());
             }
         }
@@ -175,8 +187,6 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
         daysList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         daysList.setAdapter(daysAdapter);
 
-        initializeData();
-
         setTime(null);
         updateTick();
 
@@ -201,7 +211,7 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
     }
 
     protected void updateTick() {
-        TimeQuery.requestTime(date -> runOnUiThread(() -> setTime(date)));
+        TimeQuery.requestTime().observe(this, this::setTime);
     }
 
     protected void setTime(@Nullable Date moment) {
@@ -214,6 +224,5 @@ public abstract class ScheduleActivityBase extends ToolbarActivityBase {
         }
     }
 
-    protected abstract void initializeData();
     protected abstract LessonViewHolder createLessonViewHolder(@NonNull ViewGroup parent, int viewType);
 }

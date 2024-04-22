@@ -1,8 +1,8 @@
 package org.hse.android.baseproject;
 
-import androidx.annotation.Nullable;
-
 import android.content.Intent;
+import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,12 +10,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class StudentsInfoActivity extends InfoActivityBase {
     private TextView teacherLabel;
+    protected StudentsInfoViewModel viewModel;
+    protected Spinner groupsList;
 
     @Override
     protected void initializeLayout() {
@@ -29,22 +33,20 @@ public class StudentsInfoActivity extends InfoActivityBase {
         statusLabel = findViewById(R.id.activity_students_info_status);
         teacherLabel = findViewById(R.id.activity_students_info_teacher);
 
-        List<StudentsGroup> groupsList = new ArrayList<>();
-        initGroupsList(groupsList);
+        groupsList = findViewById(R.id.activity_students_info_groupselect);
 
-        Spinner spinner = findViewById(R.id.activity_students_info_groupselect);
-
-        ArrayAdapter<?> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groupsList);
+        ArrayAdapter<StudentsGroup> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinner.setAdapter(adapter);
+        groupsList.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        groupsList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 StudentsGroup group = (StudentsGroup) parent.getAdapter().getItem(position);
                 if (group != null)
-                    InstantToast.show(view.getContext(), group.getName(), Toast.LENGTH_SHORT);
+                    InstantToast.show(view.getContext(), group.name, Toast.LENGTH_SHORT);
+                updateTick();
             }
 
             @Override
@@ -55,14 +57,22 @@ public class StudentsInfoActivity extends InfoActivityBase {
 
         findViewById(R.id.activity_students_info_daily).setOnClickListener(v -> {
             Intent intent = new Intent(this, StudentsScheduleDaily.class);
-            intent.putExtra(StudentsScheduleBase.EXTRA_GROUP, (StudentsGroup)spinner.getSelectedItem());
+            intent.putExtra(StudentsScheduleBase.EXTRA_GROUP, (StudentsGroup) groupsList.getSelectedItem());
             startActivity(intent);
         });
 
         findViewById(R.id.activity_students_info_weekly).setOnClickListener(v -> {
             Intent intent = new Intent(this, StudentsScheduleWeekly.class);
-            intent.putExtra(StudentsScheduleBase.EXTRA_GROUP, (StudentsGroup)spinner.getSelectedItem());
+            intent.putExtra(StudentsScheduleBase.EXTRA_GROUP, (StudentsGroup) groupsList.getSelectedItem());
             startActivity(intent);
+        });
+
+        ViewModelProvider vmProvider = new ViewModelProvider(this);
+        viewModel = vmProvider.get(StudentsInfoViewModel.class);
+
+        viewModel.getGroups().observe(this, groups -> {
+            adapter.clear();
+            adapter.addAll(groups);
         });
     }
 
@@ -70,36 +80,40 @@ public class StudentsInfoActivity extends InfoActivityBase {
     protected void updateTick() {
         super.updateTick();
 
-        //Dummy implementation
-        setSubject(null);
-        setRoom(null);
-        setBuilding(null);
-        setStatus(null);
-        setTeacher(null);
+        if (groupsList.getSelectedItem() != null)
+        {
+            viewModel.getLessonByGroupAndTime(((StudentsGroup)groupsList.getSelectedItem()).id, Calendar.getInstance(TimeZone.GMT_ZONE)).observe(this, lesson -> {
+                if (lesson == null)
+                {
+                    setSubject(null);
+                    setRoom(null);
+                    setBuilding(null);
+                    setStatus(false);
+                }
+                else
+                {
+                    setSubject(lesson.lesson.name);
+                    setRoom(lesson.lesson.room);
+                    setBuilding(lesson.lesson.building);
+                    setTeacher(lesson.teacher.name);
+                    setStatus(true);
+                }
+            });
+        }
+        else
+        {
+            setSubject(null);
+            setRoom(null);
+            setBuilding(null);
+            setTeacher(null);
+            setStatus(false);
+        }
     }
 
     protected void setTeacher(@Nullable CharSequence teacher) {
         if (teacher == null)
-            teacher = getResources().getString(R.string.loading);
+            teacher = getResources().getString(R.string.nothing);
 
         teacherLabel.setText(teacher);
-    }
-
-    private void initGroupsList(List<StudentsGroup> list) {
-        int id = 0;
-
-        String[] courses = {"ПИ", "БИ", "И", "Э", "ИЯ"};
-        Integer[] years = {20, 21, 22, 23};
-        Integer[] groups = {1, 2, 3};
-
-        for (String course : courses) {
-            for (Integer year :
-                    years) {
-                for (Integer group :
-                        groups) {
-                    list.add(new StudentsGroup(id++, String.format(Locale.getDefault(), "%s-%d-%d", course, year, group)));
-                }
-            }
-        }
     }
 }

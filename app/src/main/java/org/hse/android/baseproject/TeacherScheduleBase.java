@@ -6,10 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 
 
-public abstract class TeacherScheduleBase extends ScheduleActivityBase {
+abstract class TeacherScheduleBase extends ScheduleActivityBase {
     public static final String EXTRA_TEACHER = "teacher";
+
+    protected TeachersScheduleViewModel viewModel;
 
     protected Teacher teacher;
 
@@ -20,7 +23,10 @@ public abstract class TeacherScheduleBase extends ScheduleActivityBase {
         teacher = (Teacher)getIntent().getSerializableExtra(EXTRA_TEACHER);
 
         if (teacher != null)
-            toolbar.setTitle(teacher.getName());
+            toolbar.setTitle(teacher.name);
+
+        ViewModelProvider vmProvider = new ViewModelProvider(this);
+        viewModel = vmProvider.get(TeachersScheduleViewModel.class);
     }
 
     @Override
@@ -43,3 +49,4 @@ public abstract class TeacherScheduleBase extends ScheduleActivityBase {
         }
     }
 }
+

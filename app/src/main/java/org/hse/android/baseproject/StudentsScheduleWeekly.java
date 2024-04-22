@@ -1,46 +1,38 @@
 package org.hse.android.baseproject;
 
 import android.icu.util.Calendar;
+import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
 
 public class StudentsScheduleWeekly extends StudentsScheduleBase {
     @Override
-    protected void initializeData() {
-
-        ScheduleDay day;
-        ScheduleLesson lesson;
-        Calendar calendar, lesStart, lesEnd;
-        int lesCount;
-        Random rnd = new Random();
-        int daysCount = rnd.nextInt(5) + 1;
-        for (int i = 0; i < daysCount; i++) {
-            calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_MONTH, i);
-            day = new ScheduleDay(calendar, new ArrayList<>());
-
-            lesCount = rnd.nextInt(5) + 1;
-            for (int j = 0; j < lesCount; j++) {
-                lesStart = (Calendar)calendar.clone();
-                lesStart.add(Calendar.HOUR, j);
-                lesEnd = (Calendar)lesStart.clone();
-                lesEnd.add(Calendar.HOUR, 1);
-
-                lesson = new ScheduleLesson(
-                        lesStart,
-                        lesEnd,
-                        "Lesson " + j,
-                        "Lesson Type",
-                        "Room " + rnd.nextInt(15),
-                        "Building " + rnd.nextInt(5),
-                        new Teacher(rnd.nextInt(15)));
-
-                day.getLessons().add(lesson);
+    protected void onCreate(@Nullable Bundle savedStateInstance) {
+        super.onCreate(savedStateInstance);
+        Calendar now = Calendar.getInstance();
+        Calendar end = (Calendar)now.clone();
+        now.set(Calendar.HOUR, 0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        end.set(Calendar.HOUR, 23);
+        end.set(Calendar.MINUTE, 59);
+        end.set(Calendar.SECOND, 59);
+        end.set(Calendar.DAY_OF_WEEK, end.getFirstDayOfWeek());
+        end.add(Calendar.DATE, 6);
+        viewModel.filterLessonsForGroup(group.id, now, end).observe(this, lessons -> {
+            List<ScheduleDay> days = new ArrayList<>();
+            while(now.getTimeInMillis() < end.getTimeInMillis()) {
+                ScheduleDay day = new ScheduleDay(now);
+                for (ScheduleLessonWithTeacher lesson : lessons) {
+                    day.addLesson(lesson);
+                }
+                days.add(day);
+                now.add(Calendar.DATE, 1);
             }
-
-            days.add(day);
-        }
-        daysAdapter.setData(days);
+            daysAdapter.setData(days);
+        });
     }
 }

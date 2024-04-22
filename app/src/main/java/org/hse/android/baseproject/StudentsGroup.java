@@ -1,31 +1,31 @@
 package org.hse.android.baseproject;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+import androidx.room.Relation;
 
 import java.io.Serializable;
+import java.util.List;
 
+@Entity(tableName = "group", indices = {@Index(value = {"name"}, unique = true)})
 public class StudentsGroup implements Serializable {
+    @Ignore
     private static final long serialVersionUID = 2233;
 
-    private final int id;
-    private final String name;
-
-    public StudentsGroup(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
+    @PrimaryKey(autoGenerate = true)
+    public int id;
 
     @NonNull
+    public String name = "Undefined";
+
     @Override
+    @NonNull
     public String toString() {
-        return getName();
+        return name;
     }
 }

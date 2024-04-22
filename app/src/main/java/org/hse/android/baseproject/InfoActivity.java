@@ -4,18 +4,25 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.icu.text.DateFormatSymbols;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
-public abstract class InfoActivityBase extends ToolbarActivityBase {
+abstract class InfoActivityBase extends ToolbarActivityBase {
     protected TextView timeLabel;
     protected TextView subjectLabel;
     protected TextView roomLabel;
@@ -51,7 +58,7 @@ public abstract class InfoActivityBase extends ToolbarActivityBase {
     }
 
     protected void updateTick() {
-        TimeQuery.requestTime(date -> runOnUiThread(() -> setTime(date)));
+        TimeQuery.requestTime().observe(this, this::setTime);
     }
 
     protected void setTime(@Nullable Date moment) {
@@ -66,21 +73,21 @@ public abstract class InfoActivityBase extends ToolbarActivityBase {
 
     protected void setSubject(@Nullable CharSequence name) {
         if (name == null)
-            name = getResources().getString(R.string.loading);
+            name = getResources().getString(R.string.nothing);
 
         subjectLabel.setText(name);
     }
 
     protected void setRoom(@Nullable CharSequence room) {
         if (room == null)
-            room = getResources().getString(R.string.loading);
+            room = getResources().getString(R.string.nothing);
 
         roomLabel.setText(room);
     }
 
     protected void setBuilding(@Nullable CharSequence building) {
         if (building == null)
-            building = getResources().getString(R.string.loading);
+            building = getResources().getString(R.string.nothing);
 
         buildingLabel.setText(building);
     }
@@ -96,3 +103,4 @@ public abstract class InfoActivityBase extends ToolbarActivityBase {
         statusLabel.setText(id);
     }
 }
+

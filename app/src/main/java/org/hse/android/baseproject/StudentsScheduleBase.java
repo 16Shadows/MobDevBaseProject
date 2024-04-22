@@ -8,10 +8,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
-public abstract class StudentsScheduleBase extends ScheduleActivityBase {
+abstract class StudentsScheduleBase extends ScheduleActivityBase {
     public static final String EXTRA_GROUP = "group";
 
+    protected StudentsScheduleViewModel viewModel;
     protected StudentsGroup group;
 
     @Override
@@ -21,7 +23,10 @@ public abstract class StudentsScheduleBase extends ScheduleActivityBase {
         group = (StudentsGroup)getIntent().getSerializableExtra(EXTRA_GROUP);
 
         if (group != null)
-            toolbar.setTitle(group.getName());
+            toolbar.setTitle(group.name);
+
+        ViewModelProvider vmProvider = new ViewModelProvider(this);
+        viewModel = vmProvider.get(StudentsScheduleViewModel.class);
     }
 
     @Override
@@ -45,12 +50,13 @@ public abstract class StudentsScheduleBase extends ScheduleActivityBase {
         }
 
         @Override
-        public void bind(@Nullable ScheduleLesson lesson) {
+        public void bind(@Nullable ScheduleLessonWithTeacher lesson) {
             super.bind(lesson);
             if (lesson == null)
                 teacher.setText(R.string.loading);
             else
-                teacher.setText(lesson.getTeacherName());
+                teacher.setText(lesson.teacher.name);
         }
     }
 }
+
