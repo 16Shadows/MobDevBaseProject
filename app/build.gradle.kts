@@ -3,6 +3,9 @@ plugins {
 }
 
 android {
+    lint {
+        disable += "Instantiatable"
+    }
     namespace = "org.hse.android.baseproject"
     compileSdk = 34
 

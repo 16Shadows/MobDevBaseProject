@@ -19,11 +19,9 @@ public class ScheduleLesson {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    @TypeConverters(DatabaseProvider.HseTimetableDatabase.CalendarConverter.class)
     @NonNull
     public Calendar startMomentUtc = Calendar.getInstance(TimeZone.GMT_ZONE);
 
-    @TypeConverters(DatabaseProvider.HseTimetableDatabase.CalendarConverter.class)
     @NonNull
     public Calendar endMomentUtc = Calendar.getInstance(TimeZone.GMT_ZONE);
 
