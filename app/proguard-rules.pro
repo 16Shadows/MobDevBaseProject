@@ -19,8 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepattributes Signature
+-keep class org.hse.android.baseproject.Time {*;}
+-keep class org.hse.android.baseproject.TimeResponse {*;}
 -keep class * extends androidx.room.RoomDatabase
--keepattributes InnerClasses
 -keep class org.hse.android.baseproject.DatabaseProvider$* { *; }
 -keep @androidx.room.Entity class *
 -dontwarn androidx.room.paging.**

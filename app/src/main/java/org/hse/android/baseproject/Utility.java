@@ -97,27 +97,23 @@ class PermissionsManager {
     }
 }
 
+class Time {
+    @SerializedName("current_time")
+    private String currentTime;
+
+    public String getCurrentTime() { return currentTime; }
+}
+
+class TimeResponse {
+    @SerializedName("time_zone")
+    private Time timeZone;
+
+    public Time getTimeZone() { return timeZone; }
+}
+
 class TimeQuery {
     private static final String URL = "https://api.ipgeolocation.io/ipgeo?apiKey=b03018f75ed94023a005637878ec0977";
     private static final String TAG = "TimeQuery";
-
-    public static class Time {
-        @SerializedName("current_time")
-        private String currentTime;
-
-        public String getCurrentTime() { return currentTime; }
-    }
-
-    public static class TimeResponse {
-        @SerializedName("time_zone")
-        private Time timeZone;
-
-        public Time getTimeZone() { return timeZone; }
-    }
-
-    public interface TimeQueryResponse {
-        void onResponseReady(@Nullable Date response);
-    }
 
     private static final OkHttpClient client = new OkHttpClient();
     private static final Gson gson = new Gson();
